@@ -1,0 +1,48 @@
+.careateUserForm {
+  width: 500px;
+  height: 600px;
+  background-color: deepskyblue;
+  box-shadow: 3px 3px 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.careateUserForm .title {
+  color: white;
+  flex: 20%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 35px;
+}
+
+.careateUserForm .inputs {
+  flex: 80%;
+  width: 100%;
+}
+
+.careateUserForm .errors {
+  color: red;
+}
+
+.careateUserForm #bsd {
+  align-self: flex-end;
+  padding-right: 10px;
+  color: white;
+}
+
+.inputs input {
+  width: 250px;
+  height: 40px;
+  font-size: 20px;
+  border-radius: 6px;
+  border: none;
+  padding-left: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.inputs #submit {
+  cursor: pointer;
+}

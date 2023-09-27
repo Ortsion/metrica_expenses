@@ -1,0 +1,63 @@
+.expenseRegistration {
+    width: 500px;
+    height: 600px;
+    background-color: #0d6443;
+    box-shadow: 3px 3px 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+    /* padding-top: 200px; */
+  }
+  
+  .expenseRegistration .expenseDatePicker {
+    color: azure;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .expenseRegistration .title {
+    color: white;
+    flex: 20%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    font-size: 35px;
+  }
+  
+  .expenseRegistration .inputs {
+    flex: 80%;
+    width: 100%;
+  }
+  
+  .expenseRegistration .errors {
+    color: red;
+  }
+  
+  .expenseRegistration #bsd {
+    align-self: flex-end;
+    padding-right: 10px;
+    color: white;
+  }
+
+   #desktopDatePicker {
+    color: aliceblue;
+    border-radius: 5px;
+  }
+  
+  .inputs input {
+    width: 250px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 6px;
+    border: none;
+    padding-left: 10px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .inputs #submit {
+    cursor: pointer;
+  }
