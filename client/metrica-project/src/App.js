@@ -7,7 +7,7 @@ import CategoriesRegistration from "./Components/CategoriesRegistration/Categori
 import { CategoryContext } from "./contexts/categoryContext";
 import { useState } from "react";
 import ExpenseRegistration from "./Components/ExpenseRegistration/ExpenseRegistration";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import NavigationBar from "./Components/NavigationBar/NavigationBar";
@@ -16,11 +16,28 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCategory2, setSelectedCategory2] = useState({});
   const [selectedCategory3, setSelectedCategory3] = useState({});
+  const [refreshDropdown, setRefreshDropdown] = useState(false);
+  const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
+  const [openAlertError, setOpenAlertError] = useState(false);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="App">
         <CategoryContext.Provider
-          value={{ selectedCategory, setSelectedCategory,selectedCategory2, setSelectedCategory2,selectedCategory3, setSelectedCategory3 }}
+          value={{
+            selectedCategory,
+            setSelectedCategory,
+            selectedCategory2,
+            setSelectedCategory2,
+            selectedCategory3,
+            setSelectedCategory3,
+            refreshDropdown,
+            setRefreshDropdown,
+            openAlertSuccess,
+            setOpenAlertSuccess,
+            openAlertError,
+            setOpenAlertError,
+          }}
         >
           {/* <NavigationBar/> */}
           <Routes>

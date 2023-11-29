@@ -1,5 +1,40 @@
-
-.categoriesRegistration{
+.categoriesRegistration {
     color: green;
     padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px black; */
+    width: 100%;
+    height: 100%;
+    margin-top: 200px;
+}
+
+.categoriesRegistration .categoriesWeapper {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.categoriesRegistration .insertCategory {
+    border-left: 3px dotted black;
+    padding-left: 20px;
+    height: 100%;
+    color: black;
+}
+
+.categoriesRegistration input {
+    text-align: center;
+    font-size: large;
+    border-radius: 7px;
+    border: none;
+}
+
+.categoriesRegistration h3 {
+    font-size: x-large;
+}
+
+#submitCategoryBTN:hover {
+    outline: 2px solid black;
 }

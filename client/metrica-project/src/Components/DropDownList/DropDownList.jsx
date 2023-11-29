@@ -9,7 +9,8 @@ export default function DropDownList(props) {
 
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState({});
-  const {selectedCategory, setSelectedCategory,selectedCategory2, setSelectedCategory2, selectedCategory3, setSelectedCategory3} = useContext(CategoryContext);
+  // const [refreshDropdown, setRefreshDropdown] = useState(false);
+  const {selectedCategory, setSelectedCategory,selectedCategory2, setSelectedCategory2, selectedCategory3, setSelectedCategory3, refreshDropdown, setRefreshDropdown} = useContext(CategoryContext);
 
   useEffect(() => {
     const apiEndpoint = props.apiEndpoint;
@@ -31,7 +32,7 @@ export default function DropDownList(props) {
         console.error('Error fetching options:', error);
       });
 
-  }, [selectedCategory,selectedCategory2]); // The empty dependency array ensures this effect runs once on component mount
+  }, [selectedCategory,selectedCategory2, refreshDropdown]); // The empty dependency array ensures this effect runs once on component mount
 
 
   const handleSelectChange = (event) => {
@@ -47,9 +48,9 @@ export default function DropDownList(props) {
   };
 
   return (
-    <div >
+    <div className='DropDownList'>
       <select value={selectedOption.name} onChange={handleSelectChange}>
-        <option value="">Select an option</option>
+        <option value="">בחר קטגוריה</option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name}

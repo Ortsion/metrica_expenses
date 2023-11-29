@@ -1,0 +1,28 @@
+.MUIAlert {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    direction: rtl;
+}
+
+.MUIAlert #alert {
+    background-color: rgb(208, 234, 207);
+    color: green;
+
+}
+
+.MUIAlert .alertSection {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.MUIAlert #closeIcon {
+    position: relative;
+    left: -30px;
+}
+
+.MUIAlert #closeIcon:hover {
+    color: black;
+}

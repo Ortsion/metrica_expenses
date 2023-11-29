@@ -22,7 +22,7 @@ export default function Login() {
           // Handle successful response
           console.log('Login.jsx says: respnse.data =', response.data);
           setLoginStatus(true);
-          localStorage.setItem("token", response.data.token)
+          localStorage.setItem("token", response.data.token);
           navigate('/categoryRegistration');
       
         } catch (error) {

@@ -31,6 +31,12 @@
     flex: 80%;
     width: 100%;
   }
+
+   #mainWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items:last baseline;
+  }
   
   .expenseRegistration .errors {
     color: red;
@@ -39,6 +45,10 @@
   .expenseRegistration #bsd {
     align-self: flex-end;
     padding-right: 10px;
+    color: white;
+  }
+
+  .labelTXT {
     color: white;
   }
 
@@ -60,4 +70,15 @@
   
   .inputs #submit {
     cursor: pointer;
+  }
+
+  .rowWrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rowWrapper > p {
+    color: white;
   }

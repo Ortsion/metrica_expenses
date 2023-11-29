@@ -14,6 +14,8 @@ import { styled } from '@mui/system';
 import DropDownList from "../DropDownList/DropDownList";
 import { CategoryContext } from '../../contexts/categoryContext';
 import NavigationBar from "../NavigationBar/NavigationBar";
+import MUIAlert from "../../MUI/MUIAlert/MUIAlert";
+
 
 const CustomDesktopDatePicker = styled(DesktopDatePicker)({
     color: 'blue',
@@ -25,7 +27,7 @@ const CustomDesktopDatePicker = styled(DesktopDatePicker)({
 
 const schema = yup.object().shape({
     amount: yup.number().required().positive(),
-    description: yup.string().min(2).max(255),
+    description: yup.string().max(255).notRequired(),
     taxRefund: yup.number().min(0).required(),
     recordDate: yup.date().default(() => new Date()),
 })
@@ -38,11 +40,8 @@ export default function ExpenseRegistration() {
     const [currentDate, setCurrentDate] = useState(dayjs(''));
     const apiEndpoint = 'http://localhost:3008/api/categoriesRegistration';
     const { selectedCategory, setSelectedCategory, selectedCategory2, setSelectedCategory2, selectedCategory3 } = useContext(CategoryContext);
-
-    // useEffect(() => {
-    //     setSelectedCategory('');
-    //     setSelectedCategory2('') ;
-    // },[selectedCategory]);
+    const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
+    const [openAlertError, setOpenAlertError] = useState(false);
 
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -70,16 +69,16 @@ export default function ExpenseRegistration() {
             });
 
             if (response.status === 200) {
-                alert('רישום הוצאה בוצע בהצלחה');
                 setCurrentDate(dayjs(''));
-                setSelectedCategory('');
-                setSelectedCategory2('');
+                // setSelectedCategory('');
+                // setSelectedCategory2('');
+                setOpenAlertSuccess(true);
             } else {
-                alert('רישום הוצאה נכשל, אנא פנה לאחראי');
+                setOpenAlertError(true);
             }
         } catch (error) {
             console.error("An error occurred:", error);
-            alert('רישום הוצאה נכשל, אנא פנה לאחראי')
+            setOpenAlertError(true);
         }
     }
     return (
@@ -90,9 +89,8 @@ export default function ExpenseRegistration() {
             <div className="title">רישום הוצאה</div>
             <div className="inputs">
                 <form onSubmit={handleSubmit(submitForm)}>
-
                     <DropDownList
-                        
+
                         apiEndpoint={apiEndpoint}
                         father={"0"}
                         categoryType="ראשית"
@@ -101,7 +99,7 @@ export default function ExpenseRegistration() {
                     <br></br>
 
                     <DropDownList
-                    
+
                         apiEndpoint={apiEndpoint}
                         father={selectedCategory}
                         categoryType="משנית"
@@ -116,45 +114,59 @@ export default function ExpenseRegistration() {
                         categoryHirarchy='end'
                     />
                     <br></br>
-                    <div className="expenseDatePicker">
-                        <p id="expenseDate">{":תאריך הוצאה"}</p>
-                        <CustomDesktopDatePicker
-                            value={currentDate}
-                            onChange={(newDate) => setCurrentDate(newDate)}
-                            format="DD/MM/YYYY"
-                            id="desktopDatePicker"
-                        />
+
+                    <div id="mainWrapper">
+                        <div className="expenseDatePicker">
+                            <p id="expenseDate">{":תאריך הוצאה"}</p> &nbsp; &nbsp;
+                            <CustomDesktopDatePicker
+                                value={currentDate}
+                                onChange={(newDate) => setCurrentDate(newDate)}
+                                format="DD/MM/YYYY"
+                                id="desktopDatePicker"
+                            />
+                        </div>
+
+                        <div className="rowWrapper">
+                            <p>{":סכום הוצאה"}</p> &nbsp; &nbsp;
+                            <input
+                                type="number"
+                                name="amount"
+                                placeholder="סכום הוצאה"
+                                {...register("amount")}
+                            />
+                        </div>
+                        <p className="errors">{errors.amount && "לא ניתן להזין מספר שלילי"}</p>
+
+                        <div className="rowWrapper">
+                            <p>{":תיאור"}</p> &nbsp; &nbsp;
+                            <input
+                                id="taxRufundInput"
+                                type="text"
+                                name="description"
+                                placeholder="תיאור הוצאה (אופציונלי)"
+                                {...register("description")}
+                            />
+                        </div>
+
+                        <div className="rowWrapper">
+                            <p>{":החזר מעמ באחוזים"}</p> &nbsp; &nbsp;
+                            <input
+                                type="number"
+                                name="taxRefund"
+                                placeholder="החזר מעמ (באחוזים)"
+                                value={17}
+                                {...register("taxRefund")}
+                            />
+                        </div>
+                        <p className="errors">{errors.taxRefund && "לא ניתן להזין מספר שלילי"}</p>
+
+                        <input type="submit" id="submit" value={"שלח"} ></input>
                     </div>
-
-                    <input
-                        type="number"
-                        name="amount"
-                        placeholder="סכום הוצאה"
-                        {...register("amount")}
-                    />
-                    <p className="errors">{errors.amount && "לא ניתן להזין מספר שלילי"}</p>
-
-
-                    <input
-                        id="taxRufundInput"
-                        type="text"
-                        name="description"
-                        placeholder="תיאור הוצאה (אופציונלי)"
-                        {...register("description")}
-                    />
-
-                    <input
-                        type="number"
-                        name="taxRefund"
-                        placeholder="החזר מעמ (באחוזים)"
-                        {...register("taxRefund")}
-                    />
-                    <p className="errors">{errors.taxRefund && "לא ניתן להזין מספר שלילי"}</p>
-
-                    <input type="submit" id="submit" value={"שלח"} ></input>
                 </form>
             </div>
 
+            {openAlertSuccess && <MUIAlert severity="success" alertTitle="בוצע בהצלחה" />}
+            {openAlertError && <MUIAlert severity="error" alertTitle="רישום נכשל" />}
 
         </div>
 
