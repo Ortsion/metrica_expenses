@@ -8,8 +8,8 @@ import { submitCategory } from '../../toolsFunctions/categoryRegistration'
 
 
 export default function EndCategory() {
-
-  const apiEndpoint = 'http://localhost:3008/api/categoriesRegistration';
+  const host = process.env.REACT_APP_API_BASE_URL;
+  const apiEndpoint = `${host}/api/categoriesRegistration`;
   const { selectedCategory, setSelectedCategory, selectedCategory2, setSelectedCategory2, selectedCategory3, setSelectedCategory3 } = useContext(CategoryContext);
   const { openAlertSuccess, setOpenAlertSuccess } = useContext(CategoryContext);
   const { openAlertError, setOpenAlertError } = useContext(CategoryContext);

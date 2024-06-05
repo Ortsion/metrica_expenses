@@ -8,6 +8,8 @@ const loginRoute = require('./routes/login');
 const protectedRoute =require('./routes/protectedRoute');
 const categoriesRegistrationRoute =require('./routes/categoriesRegistrationRoute');
 const expenseRegistrationRouter = require('./routes/expenseRegistrationRoute');
+const userDetails = require('./routes/userDetails');
+const bucket = require('./routes/bucketRoute');
 
 dotenv.config();
 // const router = express.Router();
@@ -34,6 +36,8 @@ app.use('/api/login', loginRoute);
 app.use('/api/categoriesRegistration', categoriesRegistrationRoute);
 app.use('/api/protectedRoute', protectedRoute);
 app.use('/api/expenseRegistration', expenseRegistrationRouter);
+app.use('/api/userDetails', userDetails);
+app.use('/api/bucket', bucket);
 
 // app.get('/api/protectedRoute',(req, res) => {
 //     res.send('hello from index/js')

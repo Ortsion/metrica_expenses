@@ -19,6 +19,9 @@ function App() {
   const [refreshDropdown, setRefreshDropdown] = useState(false);
   const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
   const [openAlertError, setOpenAlertError] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [bucket, setBucket] = useState({});
+  const [fixOrVar, setFixOrVar]= useState('');
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -37,6 +40,12 @@ function App() {
             setOpenAlertSuccess,
             openAlertError,
             setOpenAlertError,
+            userName,
+            setUserName,
+            bucket,
+            setBucket,
+            fixOrVar,
+            setFixOrVar,
           }}
         >
           {/* <NavigationBar/> */}

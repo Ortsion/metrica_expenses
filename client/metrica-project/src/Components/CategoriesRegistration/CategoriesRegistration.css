@@ -1,11 +1,10 @@
 .categoriesRegistration {
-    color: green;
-    padding-top: 60px;
+    /* padding-top: 60px; */
     display: flex;
     flex-direction: column;
     /* border: 1px black; */
     width: 100%;
-    height: 100%;
+    height: 100vh;
     margin-top: 200px;
 }
 
@@ -22,6 +21,9 @@
     padding-left: 20px;
     height: 100%;
     color: black;
+    display: flex;
+    flex-direction: column;
+    /* gap: 30px; */
 }
 
 .categoriesRegistration input {
@@ -29,10 +31,16 @@
     font-size: large;
     border-radius: 7px;
     border: none;
+    /* border: 10px solid blue; */
 }
 
 .categoriesRegistration h3 {
     font-size: x-large;
+}
+
+.categoriesRegistration .categoriesListDiv {
+    /* border: 2px solid green; */
+    margin-top: 30px;
 }
 
 #submitCategoryBTN:hover {

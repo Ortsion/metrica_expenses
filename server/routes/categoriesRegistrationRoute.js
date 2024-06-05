@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
   }
 
   // Verify the token
-  console.log("got the token from the user");
+  console.log("connection available");
   jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token" });

@@ -9,8 +9,7 @@ export default function DropDownList(props) {
 
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState({});
-  // const [refreshDropdown, setRefreshDropdown] = useState(false);
-  const {selectedCategory, setSelectedCategory,selectedCategory2, setSelectedCategory2, selectedCategory3, setSelectedCategory3, refreshDropdown, setRefreshDropdown} = useContext(CategoryContext);
+  const { selectedCategory, setSelectedCategory, selectedCategory2, setSelectedCategory2, selectedCategory3, setSelectedCategory3, refreshDropdown, setRefreshDropdown, bucket, setBucket } = useContext(CategoryContext);
 
   useEffect(() => {
     const apiEndpoint = props.apiEndpoint;
@@ -21,22 +20,24 @@ export default function DropDownList(props) {
         father: props.father,
       },
       headers: {
-        Authorization: localStorage.getItem('token') 
+        Authorization: localStorage.getItem('token')
       }
     })
       .then((response) => {
         setOptions(response.data);
-    console.log('response.data: ' ,response.data);
+        // console.log('response.data from DropDoemList: ', response.data);
       })
       .catch((error) => {
         console.error('Error fetching options:', error);
       });
 
-  }, [selectedCategory,selectedCategory2, refreshDropdown]); // The empty dependency array ensures this effect runs once on component mount
+    console.log("current bucket: ", bucket)
+
+  }, [selectedCategory, selectedCategory2, refreshDropdown, bucket]); // The empty dependency array ensures this effect runs once on component mount
 
 
   const handleSelectChange = (event) => {
-    console.log("Event.target.value from DrpoDownList: ",event.target.value)
+    // console.log("Event.target.value from DrpoDownList: ", event.target.value)
 
     if (props.categoryHirarchy == 'primary') {
       setSelectedCategory(event.target.value);
@@ -44,6 +45,12 @@ export default function DropDownList(props) {
       setSelectedCategory2(event.target.value);
     } else if (props.categoryHirarchy == 'end') {
       setSelectedCategory3(event.target.value)
+    } else if (props.categoryHirarchy == 'bucket') {
+      const selectedIndex = event.target.selectedIndex;
+      const selectedOptionText = event.target.options[selectedIndex].text;
+      console.log("values in the enent.target.selectedIndex from DDL when updating the bucket", selectedOptionText)
+      setBucket(selectedOptionText);
+
     }
   };
 
@@ -61,14 +68,13 @@ export default function DropDownList(props) {
       &nbsp;
       <label>{`בחר קטגוריה ${props.categoryType}`}</label>
 
-      {/* {selectedCategory && <p>You selected: {selectedCategory}</p>} */}
     </div>
   );
 }
 
 DropDownList.propTypes = {
   categoryType: PropTypes.string,
-  apiEndpoint :PropTypes.string,
-  father: PropTypes.string,
-  categoryHirarchy:  PropTypes.string,  
+  apiEndpoint: PropTypes.string,
+  // father: PropTypes.string,
+  categoryHirarchy: PropTypes.string,
 }

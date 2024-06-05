@@ -1,4 +1,6 @@
-
-
-
-
+.greeting_p {
+    height: fit-content;
+    width: fit-content;
+    color: white;
+    padding: 5px;
+}

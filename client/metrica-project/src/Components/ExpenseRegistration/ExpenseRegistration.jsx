@@ -15,6 +15,7 @@ import DropDownList from "../DropDownList/DropDownList";
 import { CategoryContext } from '../../contexts/categoryContext';
 import NavigationBar from "../NavigationBar/NavigationBar";
 import MUIAlert from "../../MUI/MUIAlert/MUIAlert";
+import ColorToggleButton from "../../MUI/ColorToggleButton/ColorToggleButton";
 
 
 const CustomDesktopDatePicker = styled(DesktopDatePicker)({
@@ -30,18 +31,29 @@ const schema = yup.object().shape({
     description: yup.string().max(255).notRequired(),
     taxRefund: yup.number().min(0).required(),
     recordDate: yup.date().default(() => new Date()),
+    isDeductibleVAT: yup.boolean().required(),
+    comment: yup.string().max(255).notRequired(),
+    bucket: yup.string().max(25).notRequired(),
+    // fixORvar: yup.string.max(5).required(),
 })
 
 
 export default function ExpenseRegistration() {
-
+    const host = process.env.REACT_APP_API_BASE_URL;
     const [category, setCategory] = useState('');
     const navigate = useNavigate();
     const [currentDate, setCurrentDate] = useState(dayjs(''));
-    const apiEndpoint = 'http://localhost:3008/api/categoriesRegistration';
-    const { selectedCategory, setSelectedCategory, selectedCategory2, setSelectedCategory2, selectedCategory3 } = useContext(CategoryContext);
+    const apiEndpoint = `${host}/api/categoriesRegistration`;
+    const bucketApiEndpoint = `${host}/api/bucket`;
+    const { selectedCategory, setSelectedCategory, selectedCategory2, setSelectedCategory2, selectedCategory3, bucket, fixOrVar } = useContext(CategoryContext);
     const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
     const [openAlertError, setOpenAlertError] = useState(false);
+    const [taxRefund, setTaxRefund] = useState("17");
+    const [amount, setAmount] = useState(0);
+    let categoryValue = selectedCategory3;
+    let fatherValue = selectedCategory2;
+    const fixOrVarData = [{ option: "קבועה", value: "fix" }, { option: "משתנה", value: "var" }]
+
 
 
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -52,16 +64,26 @@ export default function ExpenseRegistration() {
 
         try {
 
-            const response = await Axios.post("http://localhost:3008/api/expenseRegistration", {
+            if (selectedCategory3 == '') {
+                categoryValue = selectedCategory2;
+                fatherValue = selectedCategory;
+            }
+            const response = await Axios.post(`${host}/api/expenseRegistration`, {
                 companyName: data.companyName,
                 expenseDate: currentDate,
                 amount: data.amount,
                 description: data.description,
                 taxRefund: data.taxRefund,
                 recordDate: data.recordDate,
-                category: selectedCategory3,
-                father: selectedCategory2,
+                category: categoryValue,
+                // category: selectedCategory3,
+                father: fatherValue,
+                // father: selectedCategory2,
                 primary: selectedCategory,
+                isDeductibleVAT: data.isDeductibleVAT,
+                comment: data.comment,
+                fixOrVar: fixOrVar,
+                bucket: bucket,
             }, {
                 headers: {
                     Authorization: localStorage.getItem("token"),
@@ -70,15 +92,22 @@ export default function ExpenseRegistration() {
 
             if (response.status === 200) {
                 setCurrentDate(dayjs(''));
-                // setSelectedCategory('');
-                // setSelectedCategory2('');
                 setOpenAlertSuccess(true);
+                setTimeout(() => {
+                    setOpenAlertSuccess(false)
+                }, 5000);
             } else {
                 setOpenAlertError(true);
+                setTimeout(() => {
+                    setOpenAlertError(false)
+                }, 5000);
             }
         } catch (error) {
             console.error("An error occurred:", error);
             setOpenAlertError(true);
+            setTimeout(() => {
+                setOpenAlertError(false)
+            }, 5000);
         }
     }
     return (
@@ -115,6 +144,14 @@ export default function ExpenseRegistration() {
                     />
                     <br></br>
 
+                    <DropDownList
+                        apiEndpoint={bucketApiEndpoint}
+                        father="bucket"
+                        categoryType="קבוצה"
+                        categoryHirarchy='bucket'
+                    />
+                    <br></br>
+
                     <div id="mainWrapper">
                         <div className="expenseDatePicker">
                             <p id="expenseDate">{":תאריך הוצאה"}</p> &nbsp; &nbsp;
@@ -131,6 +168,7 @@ export default function ExpenseRegistration() {
                             <input
                                 type="number"
                                 name="amount"
+                                defaultValue={amount}
                                 placeholder="סכום הוצאה"
                                 {...register("amount")}
                             />
@@ -149,16 +187,45 @@ export default function ExpenseRegistration() {
                         </div>
 
                         <div className="rowWrapper">
+                            <p>{":הערה"}</p> &nbsp; &nbsp;
+                            <input
+                                id="comment"
+                                type="text"
+                                name="comment"
+                                placeholder="הערה (אופציונלי)"
+                                {...register("comment")}
+                            />
+                        </div>
+
+                        <div className="rowWrapper">
                             <p>{":החזר מעמ באחוזים"}</p> &nbsp; &nbsp;
                             <input
                                 type="number"
                                 name="taxRefund"
                                 placeholder="החזר מעמ (באחוזים)"
-                                value={17}
+                                defaultValue={taxRefund}
+                                onChange={(e) => { setTaxRefund(e.target.value); }}
                                 {...register("taxRefund")}
                             />
                         </div>
                         <p className="errors">{errors.taxRefund && "לא ניתן להזין מספר שלילי"}</p>
+
+                        <div className="isDeductibleVAT">
+
+                            <p>{`?מוכר מע"מ`}</p>
+                            <label>
+                                <input id="isDeductibleVATInput"
+                                    type="checkbox"
+                                    {...register("isDeductibleVAT")}
+                                />
+                            </label>
+
+                        </div> <br></br>
+
+                        <div className="rowWrapper" id="fixOrVarDiv">
+                            <p>בחר סוג הוצאה משתנה/קבועה </p> <nbsp></nbsp>
+                            <ColorToggleButton data={fixOrVarData} />
+                        </div>
 
                         <input type="submit" id="submit" value={"שלח"} ></input>
                     </div>

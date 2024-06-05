@@ -7,6 +7,8 @@ import EndCategory from '../EndCategory/EndCategory';
 import NavigationBar from '../NavigationBar/NavigationBar';
 import { CategoryContext } from '../../contexts/categoryContext';
 import MUIAlert from "../../MUI/MUIAlert/MUIAlert";
+import CategoriesList from '../CategoriesList/CategoriesList';
+import Bucket from '../Bucket/Bucket';
 
 
 export default function CategoriesRegistration() {
@@ -59,15 +61,23 @@ export default function CategoriesRegistration() {
               }}
             >
             </input>
+            <div className='categoriesListDiv' >
+              <CategoriesList father={0} />
+            </div>
           </div>
           <br></br>
 
           <div className='insertCategory'>
             <SecondaryCategory />
+            {/* <CategoriesList /> */}
           </div>
 
           <div className='insertCategory'>
             <EndCategory />
+          </div>
+
+          <div className='insertCategory'>
+            <Bucket />
           </div>
 
         </div>

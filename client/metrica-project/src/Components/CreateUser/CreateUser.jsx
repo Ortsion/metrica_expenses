@@ -18,7 +18,8 @@ const schema = yup.object().shape({
 
 export default function CreateUser() {
     const navigate = useNavigate();
-    const [openAlert, setOpenAlert] = useState(false)
+    const [openAlert, setOpenAlert] = useState(false);
+    const host = process.env.REACT_APP_API_BASE_URL;
 
     const {
         register,
@@ -31,7 +32,7 @@ export default function CreateUser() {
     const submitForm = async (data) => {
         try {
             const response = await Axios.post(
-                "http://localhost:3008/api/userRegister",
+                `${host}/api/userRegister`,
                 {
                     companyName: data.companyName,
                     email: data.email,

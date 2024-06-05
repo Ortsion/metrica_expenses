@@ -1,0 +1,8 @@
+.categoriesListItem .categoryItem {
+    font-weight: bold;
+}
+
+.categoriesListItem .categoryItem:hover {
+    cursor: pointer;
+    color: rgb(114, 105, 105);
+}
