@@ -16,6 +16,23 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `bucket`
+--
+
+DROP TABLE IF EXISTS `bucket`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bucket` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `userId` int DEFAULT NULL,
+  `displayOrder` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_bucket_user` (`name`,`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `bucket`
 --
 
@@ -24,6 +41,24 @@ LOCK TABLES `bucket` WRITE;
 INSERT INTO `bucket` VALUES (1,'first bucket',50,0),(5,'second bucket',50,0),(8,'another bucket',50,0),(9,'try bucket name',50,0),(10,'הוצאות חריגות',50,0);
 /*!40000 ALTER TABLE `bucket` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `category`
+--
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `displayOrder` int NOT NULL,
+  `father` varchar(45) NOT NULL,
+  `userId` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `category_name` (`userId`,`father`,`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `category`
@@ -36,6 +71,36 @@ INSERT INTO `category` VALUES (125,'עובדים',0,'0',50),(126,'משכורות
 UNLOCK TABLES;
 
 --
+-- Table structure for table `expense`
+--
+
+DROP TABLE IF EXISTS `expense`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `expense` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` int NOT NULL,
+  `categoryId` int NOT NULL,
+  `expenseDate` varchar(50) DEFAULT NULL,
+  `recordDate` varchar(50) DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `taxRefund` decimal(3,1) DEFAULT NULL,
+  `father` int NOT NULL,
+  `primaryCategory` int NOT NULL,
+  `DeductibleVAT` tinyint(1) DEFAULT NULL,
+  `comment` varchar(150) DEFAULT NULL,
+  `bucket` varchar(45) DEFAULT NULL,
+  `fixOrVar` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`),
+  KEY `categoryId` (`categoryId`),
+  CONSTRAINT `expense_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`ID`),
+  CONSTRAINT `expense_ibfk_2` FOREIGN KEY (`categoryId`) REFERENCES `category` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `expense`
 --
 
@@ -44,6 +109,26 @@ LOCK TABLES `expense` WRITE;
 INSERT INTO `expense` VALUES (60,50,190,'2024-03-31T21:00:00.000Z','2024-04-09T14:03:05.973Z',1.00,'ציוד לאירועים>הגברה',17.0,189,189,0,'',NULL,NULL),(61,50,191,'2024-04-10T21:00:00.000Z','2024-04-09T14:03:44.826Z',1.00,'ציוד לאירועים>הגברה>רסיבר קומקפטי',17.0,190,189,0,'',NULL,NULL),(62,50,191,'2024-04-02T21:00:00.000Z','2024-04-09T14:21:12.911Z',2.00,'ציוד לאירועים>הגברה>רסיבר',17.0,190,189,1,'',NULL,NULL),(63,50,190,'2024-04-03T21:00:00.000Z','2024-04-09T14:23:40.590Z',5.00,'ציוד לאירועים>הגברה',17.0,189,189,1,'',NULL,NULL),(64,50,127,'2024-05-27T21:00:00.000Z','2024-05-05T15:54:41.212Z',2.00,'',17.0,126,125,1,'',NULL,NULL),(65,50,127,'2024-05-04T21:00:00.000Z','2024-05-05T16:02:49.765Z',5.00,'bucket?',17.0,126,125,1,'',NULL,NULL),(66,50,127,'2024-05-07T21:00:00.000Z','2024-05-05T16:07:05.494Z',5.00,'bucket?',17.0,126,125,1,'',NULL,NULL),(67,50,127,'2024-05-14T21:00:00.000Z','2024-05-05T16:08:22.691Z',5.00,'bucket?',17.0,126,125,1,'','data.bucket',NULL),(68,50,127,'2024-05-13T21:00:00.000Z','2024-05-05T16:09:15.850Z',5.00,'bucket?',17.0,126,125,1,'','9',NULL),(69,50,127,'2024-04-30T21:00:00.000Z','2024-05-06T12:05:04.449Z',8.00,'bucket name?',17.0,126,125,1,'','try bucket name',NULL),(70,50,191,'2024-05-08T21:00:00.000Z','2024-05-08T08:52:17.833Z',1.00,'description',17.0,190,189,1,'comment','first bucket','var'),(71,50,191,'2024-04-30T21:00:00.000Z','2024-05-08T08:52:57.923Z',2.00,'description',22.0,190,189,1,'comment','first bucket','fix'),(72,50,178,'2024-05-22T21:00:00.000Z','2024-05-17T15:07:07.600Z',123.00,'khg',17.0,177,176,1,'khgf','another bucket','var');
 /*!40000 ALTER TABLE `expense` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `CompanyName` varchar(45) NOT NULL,
+  `Email` varchar(100) NOT NULL,
+  `Password` varchar(1000) NOT NULL,
+  `Token` varchar(5000) DEFAULT NULL,
+  `CreateDate` varchar(200) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `CompanyName` (`CompanyName`),
+  UNIQUE KEY `Email` (`Email`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='		';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `user`
@@ -64,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-05 18:16:08
+-- Dump completed on 2024-06-05 18:31:16
